@@ -21,13 +21,24 @@ describe('Test Rick & Morty API', () => {
     const inputText = screen.getByRole('textbox');
 
     expect(inputText).toBeInTheDocument();
-    expect(inputText).toHaveProperty("placeholder", "Rick Sanches...");
+    expect(inputText).toHaveProperty('placeholder', 'Rick Sanches...');
 
-    const button = screen.getByRole("button", {name: /buscar/i})
+    const button = screen.getByRole('button', { name: /buscar/i });
 
-    expect(button).toHaveProperty("type", "button");
+    expect(button).toHaveProperty('type', 'button');
     expect(button).toBeInTheDocument();
   });
 
-  test('Verifica se ao buscar por "Smith" aparecem apenas 4 cards', async () => {});
+  test('Verifica se ao buscar por "Smith" aparecem apenas 4 cards', async () => {
+    const button = screen.getByRole('button', { name: /buscar/i });
+    const inputText = screen.getByRole('textbox');
+
+    userEvent.type(inputText, 'Smith');
+    userEvent.click(button);
+
+    expect(inputText.value).toBe('Smith');
+
+    const article = await screen.findAllByRole('article');
+    expect(article).toHaveLength(4);
+  });
 });
